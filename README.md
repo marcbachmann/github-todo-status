@@ -2,8 +2,17 @@
 
 The module automatically creates a html page and uploads it to s3.
 
-```
-github-todo-status \
+```bash
+# on master branch
+github-todo-status push-base \
+    --base=master \
+    --s3.key=key \
+    --s3.secret=secret \
+    --s3.bucket=bucket
+
+# on pr branch
+github-todo-status check \
+    --base=master \
     --s3.key=key \
     --s3.secret=secret \
     --s3.bucket=bucket \

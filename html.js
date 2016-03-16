@@ -13,6 +13,12 @@ module.exports = function generateHtml (opts, cb) {
           padding: 5em 0;
         }
 
+        h1.ui.center.aligned.icon.header a {
+          color: black;
+          line-height: 3em;
+          cursor: pointer;
+        }
+
         .segment.code {
           background: #FEFEFE;
         }
@@ -33,12 +39,7 @@ module.exports = function generateHtml (opts, cb) {
     </head>
     <body>
       <div class="ui main text container">
-        <h1 class="ui header">
-          <a href="${treeUrl}">
-            <i class="github icon"></i>
-          </a>
-          &nbsp;Todos
-        </h1>
+        ${htmlForHeader(treeUrl, todos)}
         ${htmlForTodos(repoUrl, treeUrl, todos)}
       </div>
     </body>
@@ -48,8 +49,29 @@ module.exports = function generateHtml (opts, cb) {
   cb(null, html)
 }
 
+function htmlForHeader (treeUrl, todos) {
+  if (!todos.length) {
+    return `
+      <h1 class="ui center aligned icon header">
+        <a href="${treeUrl}">
+          <i class="circular thumbs up icon"></i>Hooray!! There are no new todos
+        </a>
+      </h1>
+    `
+  } else {
+    return `
+      <h1 class="ui center aligned icon header">
+        <a href="${treeUrl}">
+          <i class="circular github icon"></i>Todos
+        </a>
+      </h1>
+    `
+  }
+}
+
 function htmlForTodos (repoUrl, treeUrl, todos) {
-  return todos.map(_.partial(htmlForTodo, repoUrl, treeUrl))
+  if (!todos.length) return ''
+  return todos.map(_.partial(htmlForTodo, repoUrl, treeUrl)).join('')
 }
 
 function htmlForTodo (repoUrl, treeUrl, todo) {

@@ -3,8 +3,16 @@ var leasot = require('leasot')
 var async = require('async')
 var path = require('path')
 var fs = require('fs')
+var crypto = require('crypto')
 
-module.exports = analyzeFiles
+module.exports = {
+  analyze: analyzeFiles,
+  filter: filterFiles
+}
+
+function filterFiles (opts, cb) {
+
+}
 
 function analyzeFiles (filepaths, cb) {
   async.mapLimit(filepaths, 100, analyzeFile, function (err, results) {
@@ -25,8 +33,11 @@ function analyzeFile (filepath, cb) {
     })
 
     todos.forEach(function (todo) {
+      var lines = fileContent.split('\n')
+      var smallContext = lines.slice(todo.line - 1, todo.line + 2).join('') || todo.text
+      todo.id = crypto.createHash('md5').update(smallContext).digest('hex')
       todo.ext = ext.replace(/^./, '')
-      todo.context = getContext(fileContent.split('\n'), todo)
+      todo.context = getContext(lines, todo)
     })
 
     cb(null, todos)
