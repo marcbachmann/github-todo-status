@@ -1,7 +1,7 @@
 {
   "name": "github-todo-status",
   "description": "Extract TODOs out of source code and create a status check on github.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "index.js",
   "bin": {
     "github-todo-status": "bin.js"
