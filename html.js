@@ -19,8 +19,13 @@ module.exports = function generateHtml (opts, cb) {
           cursor: pointer;
         }
 
-        .segment.code {
-          background: #FEFEFE;
+        .header a:focus {
+          outline: none;
+        }
+
+        .header a:focus .github {
+          color: #444;
+          background: #F0F0F0;
         }
 
         .ui.top.attached.label {
@@ -32,8 +37,43 @@ module.exports = function generateHtml (opts, cb) {
           float: right;
         }
 
+        .segment.code {
+          background: #FDFDFD;
+          padding: 0;
+        }
+
+        pre {
+          margin: 0;
+        }
+
+        .line {
+          display: block;
+          transition: all 0.3s ease;
+        }
+
+        .line-number {
+          display: inline-block;
+          width: 52px;
+          border-right: 1px solid #EEEEEE;
+          padding: 0 12px 0 12px;
+          margin: 0 12px 0 0;
+          background: rgba(255,255,255,0.6);
+        }
+
         .highlight {
-          background: yellow
+          background: #FFEFB4;
+          color: #814444;
+        }
+
+        .highlight .line-number {
+          color: #444;
+          font-weight: 600;
+        }
+
+        .highlight:hover, .highlight:focus  {
+          background: #FFE480;
+          color: #793535;
+          outline: none;
         }
       </style>
     </head>
@@ -75,30 +115,36 @@ function htmlForTodos (repoUrl, treeUrl, todos) {
 }
 
 function htmlForTodo (repoUrl, treeUrl, todo) {
+  var lineUrl = `${treeUrl}/${todo.file}#L${todo.line}`
   return `
     <div class="html ui top attached segment">
       <div class="ui top attached label">
         ${todo.file}:${todo.line}
 
-        <a href="${treeUrl}/${todo.file}#L${todo.line}" class="todo-action" title="Open file on github">
+        <a tabindex = "-1" href="${lineUrl}" class="todo-action" title="Open file on github">
           <i class="linkify link icon"></i>
         </a>
 
-        <a href="${repoUrl}/issues/new?title=${todo.text}" class="todo-action" title="Create an issue">
+        <a tabindex = "-1" href="${repoUrl}/issues/new?title=${todo.text}" class="todo-action" title="Create an issue">
           <i class="bug link icon"></i>
         </a>
       </div>
     </div>
     <div class="ui bottom attached segment code">
-      <pre><code class="language-${todo.ext}">${htmlForTodoContent(todo)}</code></pre>
+      <pre><code class="language-${todo.ext}">${htmlForTodoContent(todo, lineUrl)}</code></pre>
     </div>
   `
 }
 
-function htmlForTodoContent (todo) {
+function htmlForTodoContent (todo, lineUrl) {
   var line = todo.context.line
-  var content = todo.context.partial.map(_.escape)
-  content[line] = '<span class="highlight">' + content[line] + '</span>'
-  return content.join('\n').replace(/^\s+\n|\n\s$/g, '')
+  var content = todo.context.partial.map(function (lineContent, i) {
+    lineContent = _.escape(lineContent)
+    var lineNumber = `<span class="line-number">${i + 1 + todo.context.begin }</span>`
+    if (i == line) return `<a href="${lineUrl}" class="line highlight">${lineNumber}${lineContent}</a>`
+    else return '<span class="line">' + lineNumber + lineContent + '</span>'
+  })
+
+  return content.join('').replace(/^\s+\n|\n\s$/g, '')
 }
 
