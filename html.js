@@ -99,6 +99,6 @@ function htmlForTodoContent (todo) {
   var line = todo.context.line
   var content = todo.context.partial.map(_.escape)
   content[line] = '<span class="highlight">' + content[line] + '</span>'
-  return content.join('\n').trim()
+  return content.join('\n').replace(/^\s+\n|\n\s$/g, '')
 }
 
