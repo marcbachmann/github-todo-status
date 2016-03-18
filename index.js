@@ -58,7 +58,7 @@ function check (originalConfig, cb) {
       basePrefix: config.basePrefix,
       todos: todos
     }, function (err, todos) {
-      if (err) return console.error('Error filtering the todos')
+      if (err) return console.error('Error filtering the todos:', err)
 
       generate({
         todos: todos,
