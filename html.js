@@ -5,8 +5,10 @@ module.exports = function generateHtml (opts, cb) {
   var treeUrl = `${repoUrl}/tree/${opts.sha}`
   var todos = opts.todos
   var html = `
+  <!DOCTYPE html>
   <html>
     <head>
+      <meta charset="UTF-8">
       <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.css">
       <style>
         .ui.main.text.container {
