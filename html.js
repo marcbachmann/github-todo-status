@@ -48,9 +48,15 @@ module.exports = function generateHtml (opts, cb) {
           margin: 0;
         }
 
+        code {
+          display: table;
+          width: 100%;
+        }
+
         .line {
-          display: block;
+          display: table-row;
           transition: all 0.3s ease;
+          width: 100%;
         }
 
         .line-number {
