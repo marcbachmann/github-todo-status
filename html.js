@@ -60,6 +60,10 @@ module.exports = function generateHtml (opts, cb) {
           background: rgba(255,255,255,0.6);
         }
 
+        .line-number:before {
+          content: attr(nr);
+        }
+
         .highlight {
           background: #FFEFB4;
           color: #814444;
@@ -140,7 +144,8 @@ function htmlForTodoContent (todo, lineUrl) {
   var line = todo.context.line
   var content = todo.context.partial.map(function (lineContent, i) {
     lineContent = _.escape(lineContent)
-    var lineNumber = `<span class="line-number">${i + 1 + todo.context.begin }</span>`
+    var lineNr = i + todo.context.begin + 1
+    var lineNumber = `<span class="line-number" nr="${lineNr}"></span>`
     if (i == line) return `<a href="${lineUrl}" class="line highlight">${lineNumber}${lineContent}</a>`
     else return '<span class="line">' + lineNumber + lineContent + '</span>'
   })
