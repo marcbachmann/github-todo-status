@@ -6,12 +6,7 @@ var fs = require('fs')
 var crypto = require('crypto')
 
 module.exports = {
-  analyze: analyzeFiles,
-  filter: filterFiles
-}
-
-function filterFiles (opts, cb) {
-
+  analyze: analyzeFiles
 }
 
 function analyzeFiles (filepaths, cb) {
