@@ -11,9 +11,10 @@ module.exports = {
   pushBase: pushBase
 }
 
+var exts = ['.cs', '.cpp', '.c', '.h', '.css', '.cjsx', '.coffee', '.ejs', '.erb', '.erl', '.hrl', '.go', '.html', '.htm', '.haml', '.hbs', '.handlebars', '.hs', '.hgn', '.hogan', '.jade', '.pug', '.js', '.es', '.es6', '.jsx', '.less', '.mustache', '.php', '.pas', '.pl', '.pm', '.py', '.rb', '.sass', '.scss', '.sh', '.zsh', '.bash', '.ss', '.styl', '.twig', '.ts']
 var defaults = {
   cwd: process.cwd(),
-  files: '**/**@(\.js|\.coffee)',
+  files: '**/**@(' + exts.join('|').replace(/\./g, '\\.') + ')',
   ignore: ['node_modules/**/*', '**/*.min.js'],
   base: undefined,
   basePrefix: '/commits/{{sha}}.json',
